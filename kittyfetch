@@ -9,7 +9,7 @@ import subprocess
 
 pacman = ["arch"]
 dpkg = ["debian", "ubuntu", "linuxmint"]
-rpm = ["fedora", "rhel"]
+rpm = ["fedora", "rhel", "centos"]
 
 # Configuration
 show_art = True
