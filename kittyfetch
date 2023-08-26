@@ -1,0 +1,78 @@
+#!/usr/bin/python
+from termcolor import cprint
+from os import environ, path
+import distro
+import platform
+import subprocess
+
+# This is meant for Linux, probably won't work on other OS.
+
+pacman = ["arch"]
+dpkg = ["debian", "ubuntu", "linuxmint"]
+rpm = ["fedora", "rhel"]
+
+# Configuration
+show_art = True
+show_art_source = True
+primary_color = "red"
+secondary_color = "cyan"
+key_attrs = ["bold"]  # Leave blank for no bold
+# package_list_command = ""  # Uncomment if it doesn't work.
+if distro.id() in pacman:
+    package_list_cmd = ["pacman", "-Q"]
+elif distro.id() in dpkg:
+    package_list_cmd = ["dpkg", "-l"]
+elif distro.id() in rpm:
+    package_list_cmd = ["dnf", "list", "installed"]
+
+art = """  ^~^  ,
+ ('Y') )
+ /   \\/
+(\\|||/) hjw"""
+art_source = "asciiart.eu/animals/cats"
+
+# Script
+os_name = distro.name(pretty=True)
+kernel = f"{platform.system()} {platform.release()}"
+
+if package_list_cmd:
+    package_list = subprocess.run(package_list_cmd,
+                                  check=True,
+                                  capture_output=True)
+    if distro.id() not in rpm:
+        package_amount = subprocess.run(["wc", "-l"],
+                                        input=package_list.stdout,
+                                        capture_output=True)
+    else:
+        # For rpm (Fedora and RHEL)
+        package_list_sed = subprocess.run(["sed", "'1d'"],
+                                          input=package_list.stdout,
+                                          capture_output=True)
+        package_amount = subprocess.run(["wc", "-l"],
+                                        input=package_list_sed.stdout,
+                                        capture_output=True)
+
+shell = path.basename(environ["SHELL"])
+
+info = {
+        "OS": os_name,
+        "Kernel": kernel,
+        "Pkg": package_amount.stdout.decode("utf-8").strip() if package_amount else "?",
+        "Shell": shell,
+        }
+
+
+def main():
+    if show_art and art:
+        cprint(art, primary_color)
+
+    for k, v in info.items():
+        cprint(f"{k}:\t", primary_color, attrs=key_attrs, end="")
+        print(v)
+
+    if show_art and show_art_source and art_source:
+        cprint(f"  art from {art_source}", secondary_color)
+
+
+if __name__ == "__main__":
+    main()
