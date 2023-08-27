@@ -10,6 +10,7 @@ dpkg = ["debian", "ubuntu", "linuxmint"]
 rpm = ["fedora", "rhel", "centos"]
 
 # Configuration
+# Comment out anything you don't want in the info dictionary.
 show_art = True
 show_art_source = True
 primary_color = "red"
