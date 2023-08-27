@@ -5,8 +5,6 @@ import distro
 import platform
 import subprocess
 
-# This is meant for Linux, probably won't work on other OS.
-
 pacman = ["arch"]
 dpkg = ["debian", "ubuntu", "linuxmint"]
 rpm = ["fedora", "rhel", "centos"]
@@ -17,7 +15,7 @@ show_art_source = True
 primary_color = "red"
 secondary_color = "cyan"
 key_attrs = ["bold"]  # Leave blank for no bold
-# package_list_command = ""  # Uncomment if it doesn't work.
+# package_list_cmd = [""]  # Uncomment if it doesn't work, add your command.
 if distro.id() in pacman:
     package_list_cmd = ["pacman", "-Q"]
 elif distro.id() in dpkg:
