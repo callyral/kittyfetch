@@ -18,7 +18,7 @@ sudo mv kittyfetch /usr/local/bin/
 
 configuration is in the script, you must edit it.
 
-i plan on adding de/wm detection and a config file.
+~~i plan on adding de/wm detection and a config file.~~ i don't have any plans for this right now, feel free to make pull requests if you'd like to
 
 ## note
 
