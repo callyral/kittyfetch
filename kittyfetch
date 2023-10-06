@@ -8,6 +8,7 @@ import subprocess
 pacman = ["arch"]
 dpkg = ["debian", "ubuntu", "linuxmint"]
 rpm = ["fedora", "rhel", "centos"]
+xbps = ["void"]
 
 # Configuration
 # Comment out anything you don't want in the info dictionary.
@@ -23,6 +24,13 @@ elif distro.id() in dpkg:
     package_list_cmd = ["dpkg", "-l"]
 elif distro.id() in rpm:
     package_list_cmd = ["dnf", "list", "installed"]
+elif distro.id() in xbps:
+    package_list_cmd = ["xbps-query", "-l"]
+
+try:
+    package_list_cmd
+except NameError:
+    package_list_cmd = None
 
 art = """  ^~^  ,
  ('Y') )
@@ -34,7 +42,8 @@ art_source = "asciiart.eu/animals/cats"
 os_name = distro.name(pretty=True)
 kernel = f"{platform.system()} {platform.release()}"
 
-if package_list_cmd:
+package_amount = None
+if package_list_cmd is not None:
     package_list = subprocess.run(package_list_cmd,
                                   check=True,
                                   capture_output=True)
@@ -57,7 +66,7 @@ uptime = subprocess.run(["uptime", "-p"], capture_output=True)
 info = {
         "OS": os_name if os_name else "?",
         "Kernel": kernel if kernel else "?",
-        "Pkg": package_amount.stdout.decode("utf-8").strip() if package_amount else "?",
+        "Pkg": package_amount.stdout.decode("utf-8").strip() if package_amount is not None else "?",
         "Shell": shell if shell else "?",
         "Uptime": uptime.stdout.decode("utf-8").strip() if uptime else "?"
         }
