@@ -1,3 +1,5 @@
+# this has been archived and is no longer mantained
+
 # kittyfetch
 
 a fetch tool inspired by ufetch, written in python. it even has an ascii cat!
